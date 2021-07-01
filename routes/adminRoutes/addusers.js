@@ -49,12 +49,27 @@ router.post("/addAdmin", async (req, res) => {
 });
 
 router.post("/adminlogin", async (req, res) => {
+  console.log("adminlogin-POST");
   const { email, password } = req.body;
   AdminSchema.findOne({ email: email }).then((existingadmin) => {
     if (!existingadmin) {
       return res.status(422).json({ error: "invalid email" });
     }
     if (password === existingadmin.password) {
+      return res.status(200).json({ message: "successful" });
+    } else {
+      return res.status(422).json({ error: "invalid email & password" });
+    }
+  });
+});
+
+router.post("/editorlogin", async (req, res) => {
+  const { email, password } = req.body;
+  EditorSchema.findOne({ email: email }).then((existingeditor) => {
+    if (!existingeditor) {
+      return res.status(422).json({ error: "invalid email" });
+    }
+    if (password === existingeditor.password) {
       return res.status(200).json({ message: "successful" });
     } else {
       return res.status(422).json({ error: "invalid email & password" });
